@@ -1,6 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/caja"
+    android:background="@color/mora1"
+    android:orientation="vertical"
+    android:weightSum="4"
+    android:padding="2dp"> <!--suma de pesos-->
+<!--LINEAR -->
+    <LinearLayout
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:weightSum="9"
+        android:layout_weight="1"
+
+
+        >
+<!--METER LOS TEXTVIEWS-->
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/idItemUserId"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:textStyle="bold"
+            android:textColor="@color/mora"
+            android:background="@color/white"
+            android:textSize="20dp"
+
+
+            />
+
+        <TextView
+            android:layout_weight="8"
+            android:id="@+id/idItemName"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:textStyle="bold"
+            android:textColor="@color/mora"
+            android:background="@color/white"
+            android:textSize="20dp"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_weight="1"
+        android:id="@+id/idItemEmail"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:textColor="@color/letra"
+
+        />
+
+    <TextView
+        android:layout_weight="1"
+        android:id="@+id/idItemPhone"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:textColor="@color/letra"
+
+        />
+
+    <TextView
+        android:layout_weight="1"
+        android:id="@+id/idItemWebsite"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:textColor="@color/letra"
+
+        />
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

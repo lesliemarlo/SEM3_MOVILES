@@ -4,11 +4,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -20,18 +23,24 @@ import com.example.semana02.util.ConnectionRest;
 import java.util.ArrayList;
 import java.util.List;
 
+import adapter.UserAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+    //ListView y Adapter
+    ListView lstUser;
+    ArrayList<User> listaUser = new ArrayList<User>();
+    UserAdapter userAdapter;
 
-    Spinner   spnUsuarios;
-    ArrayAdapter<String> adaptadorUsuarios;
-    ArrayList<String> listaUsuarios = new ArrayList<String>();
 
-    Button   btnFiltrar;
-    TextView txtResultado;
+//--
+
+    Button btnFiltrar;
+    //--
+   //LinearLayoutCompat caja;
+
 
     //conecta al servicio REST
     ServiceUser serviceUser;
@@ -50,59 +59,48 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        //Relaciona las variables con las variables de la GUI
-        adaptadorUsuarios = new ArrayAdapter<String>(
-                this,
-                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
-                listaUsuarios);
-        spnUsuarios = findViewById(R.id.spnUsuarios);
-        spnUsuarios.setAdapter(adaptadorUsuarios);
+        //---
+        lstUser = findViewById(R.id.lstUsuarios);//se crea objeto visual
+        userAdapter = new UserAdapter(this, R.layout.user_item, listaUser);//se crea e adaptador donde pasamos data y diseño
+        lstUser.setAdapter(userAdapter);//empatmos ambos
+        //--
 
+        //Relaciona las variables con las variables de la GUI
         btnFiltrar = findViewById(R.id.btnFiltrar);
-        txtResultado = findViewById(R.id.txtResultado);
+
+        //caja = findViewById(R.id.caja);
 
         //Conecta al servicio REST
         serviceUser = ConnectionRest.getConnecion().create(ServiceUser.class);
 
-        cargaUsuarios();
+     //
+
+
 
         btnFiltrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String item = spnUsuarios.getSelectedItem().toString();
-                int position = spnUsuarios.getSelectedItemPosition();
-                String id = item.split("-")[0];
-                String nombre = item.split("-")[1];
-
-                User objUserSeleccionado = listaTotalUsuarios.get(position);
-
-                String salida =  "Users: \n\n";
-                salida +=  "Position  " + position +"\n";
-                salida +=  "Id  " + id +"\n";
-                salida +=  "Name  " + nombre +"\n";
-                salida +=  "UserName  " + objUserSeleccionado.getUsername() +"\n";
-                salida +=  "Email  " + objUserSeleccionado.getEmail() +"\n";
-                salida +=  "Phone  " + objUserSeleccionado.getPhone() +"\n";
-
-                txtResultado.setText(salida);
+                //boton filtrar
+                cargaUsuarios();
 
             }
         });
 
 
+
+
     }
 
-    void cargaUsuarios(){
+    void cargaUsuarios() {
         Call<List<User>> call = serviceUser.listausuarios();
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                    if (response.isSuccessful()){
                        listaTotalUsuarios = response.body();
-                       for(User x:listaTotalUsuarios){
-                           listaUsuarios.add(x.getId() + " - " + x.getName());
-                       }
-                       adaptadorUsuarios.notifyDataSetChanged();
+                       listaUser.clear();
+                       listaUser.addAll(listaTotalUsuarios);
+                       userAdapter.notifyDataSetChanged();
                    }
             }
             @Override
@@ -112,5 +110,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    //tarea
 
 }
